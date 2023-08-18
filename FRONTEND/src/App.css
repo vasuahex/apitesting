@@ -1,0 +1,7 @@
+.header-links{
+  display: flex;
+  gap: 20px;
+}
+a{
+  text-decoration: none !important ;
+}
