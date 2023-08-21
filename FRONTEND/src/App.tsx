@@ -6,6 +6,8 @@ import Contact from './components/Contact'
 import Login from './components/Login'
 import Register from './components/Register'
 import { ToastContainer } from 'react-toastify'
+import AllProducts from './components/AllProducts'
+import SingleProduct from './components/SingleProduct'
 const App = () => {
   return (
     <div>
@@ -24,9 +26,11 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path='about' element={<About />} />
+            <Route path='product' element={<About />} />
             <Route path='contact' element={<Contact />} />
             <Route path='login' element={<Login />} />
+            <Route path='allproducts' element={<AllProducts />} />
+            <Route path='product/:id' element={<SingleProduct />} />
           </Route>
           <Route path='register' element={<Register />} />
 
