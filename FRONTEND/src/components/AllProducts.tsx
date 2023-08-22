@@ -5,39 +5,39 @@ import { useSelector } from 'react-redux/es/hooks/useSelector'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 const AllProducts = () => {
-    useEffect(() => {
-        dispatch(getAllProducts())
-    }, [])
-    const allproducts = useSelector((state: any) => state.product.allproducts)
-    console.log(allproducts);
+  useEffect(() => {
+    dispatch(getAllProducts())
+  }, [])
+  const allproducts = useSelector((state: any) => state.product.allproducts)
+  // console.log(allproducts);
 
-    const dispatch = useDispatch()
-    return (
-        <div>
-            {allproducts.map((each: any) => (
-                <NavLink to={`/product/${each._id}`}>
-                    <Wrapper className='main'>
-                        <div className="listing-section" key={each._id}>
-                            <div className="product">
-                                <div className="image-box">
-                                    <div className="images">
-                                        <img src={each.images[0].url} alt="" />
-                                    </div>
-                                </div>
-                                <div className="text-box">
-                                    <h2 className="item">{each.title}</h2>
-                                    <h3 className="price">{each.price}</h3>
-                                    <label htmlFor="item-1-quantity">Quantity:</label>
-                                    <input type="text" name="item-1-quantity" id="item-1-quantity" value={each.quantity} />
-                                    <button type="button" name="item-1-button" id="item-1-button">Buy Now</button>
-                                </div>
-                            </div>
-                        </div>
-                    </Wrapper>
-                </NavLink>
-            ))}
-        </div>
-    )
+  const dispatch = useDispatch()
+  return (
+    <div>
+      {allproducts.map((each: any) => (
+        <NavLink to={`/product/${each._id}`}>
+          <Wrapper className='main'>
+            <div className="listing-section" key={each._id}>
+              <div className="product">
+                <div className="image-box">
+                  <div className="images">
+                    <img src={each.images[0].url} alt="" />
+                  </div>
+                </div>
+                <div className="text-box">
+                  <h2 className="item">{each.title}</h2>
+                  <h3 className="price">{each.price}</h3>
+                  <label htmlFor="item-1-quantity">Quantity:</label>
+                  <input type="text" name="item-1-quantity" id="item-1-quantity" value={each.quantity} />
+                  <button type="button" name="item-1-button" id="item-1-button">Buy Now</button>
+                </div>
+              </div>
+            </div>
+          </Wrapper>
+        </NavLink>
+      ))}
+    </div>
+  )
 }
 const Wrapper = styled.section`
 * {
@@ -116,7 +116,7 @@ const Wrapper = styled.section`
     float: left;
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
-    font-size: 1em;
+    font-size: 0.8em;
     text-transform: uppercase;
     margin: 0.2em auto;
   }
@@ -125,6 +125,7 @@ const Wrapper = styled.section`
     clear: left;
     width: 100%;
     text-align: center;
+    // font-size:40px
   }
   
   .price {

@@ -12,6 +12,31 @@ const singleProduct = async (id: string) => {
         return response.data
     }
 }
+const addingCart = async (cartData: any) => {
+    // console.log(cartData);
+    const response = await axios.post(`${base_url}users/cart`, cartData, { withCredentials: true });
+    if (response.data) {
+        return response.data
+    }
+}
+
+const gettingCart = async () => {
+    // console.log(cartData);
+    const response = await axios.get(`${base_url}users/cart`,{withCredentials:true});
+    if (response.data) {
+        return response.data
+    }
+}
+
+const clearCart = async () => {
+    // console.log(cartData);
+    const response = await axios.delete(`${base_url}users/empty-cart`,{withCredentials:true});
+    console.log(response.data);
+    
+    if (response.data) {
+        return response.data
+    }
+}
 export const productService = {
-    productDetails, singleProduct
+    productDetails, singleProduct, addingCart,gettingCart,clearCart
 }

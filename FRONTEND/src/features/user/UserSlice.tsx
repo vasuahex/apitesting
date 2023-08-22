@@ -23,9 +23,7 @@ const initialState: InitialState = {
 export const registerUser = createAsyncThunk("auth/register", async (userData, thunkAPI) => {
     try {
         return await authService.register(userData)
-
     } catch (error) {
-
         return thunkAPI.rejectWithValue(error)
     }
 }) as any
@@ -34,12 +32,12 @@ export const registerUser = createAsyncThunk("auth/register", async (userData, t
 export const loginUser = createAsyncThunk("auth/login", async (userData, thunkAPI) => {
     try {
         return await authService.login(userData)
-
     } catch (error) {
-
         return thunkAPI.rejectWithValue(error)
     }
 }) as any
+
+
 
 export const authSlice = createSlice({
 

@@ -245,6 +245,7 @@ export const saveAddress = asyncHandler((req, res, next) => __awaiter(void 0, vo
     }
 }));
 export const updateCartItems = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     const { _id } = req.user;
     const { prodId, tipAmount, color } = req.body;
     try {
@@ -255,7 +256,7 @@ export const updateCartItems = asyncHandler((req, res) => __awaiter(void 0, void
         const cart = yield Cart.findOne({ orderBy: _id });
         const basicAmount = 199;
         let deliveryCharge = (product === null || product === void 0 ? void 0 : product.price) * 1 < basicAmount ? 30 : 0;
-        let tip = tipAmount;
+        let tip = tipAmount ? tipAmount : 0;
         const handlingCharge = 2;
         let cartTotal = deliveryCharge + tip + handlingCharge + product.price * 1;
         let total = product.price;
@@ -341,7 +342,7 @@ export const deleteCartItems = asyncHandler((req, res) => __awaiter(void 0, void
             }
             yield cart.save();
             if (cart.products.length === 0) {
-                const cart = yield Cart.findOneAndRemove({ orderBy: _id });
+                const cart = yield Cart.findOneAndRemove({ orderBy: _id }, { new: true });
             }
             res.json({ message: "cart items decreased or item itself delted.", sucess: true });
         }
@@ -356,7 +357,7 @@ export const deleteCartItems = asyncHandler((req, res) => __awaiter(void 0, void
 export const getUserCart = asyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = req.user;
     try {
-        const cart = yield Cart.findOne({ orderBy: _id }).populate("products._id");
+        const cart = yield Cart.findOne({ orderBy: _id }).populate('products._id');
         res.json({ cart });
     }
     catch (error) {
@@ -369,7 +370,8 @@ export const emptyCart = asyncHandler((req, res) => __awaiter(void 0, void 0, vo
     console.log(_id);
     try {
         const user = yield User.findOne({ _id });
-        const cart = yield Cart.findOneAndRemove({ orderBy: user === null || user === void 0 ? void 0 : user._id });
+        const cart = yield Cart.findOneAndRemove({ orderBy: user === null || user === void 0 ? void 0 : user._id }, { new: true });
+        console.log(cart);
         res.json({ cart });
     }
     catch (error) {

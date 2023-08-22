@@ -12,6 +12,7 @@ import jwtToken from "../utils/jwtToken.js";
 import { validateMogodbId } from '../utils/validateMongodbId.js'
 import NodeMailer from "../utils/NodeMailer.js"
 import uniqueId from "uniqid"
+import { log } from "console";
 
 // register
 export const createUser = asyncHandler(async (req, res) => {
@@ -22,7 +23,7 @@ export const createUser = asyncHandler(async (req, res) => {
     }
     const findUser = await User.findOne({ email })
     const findPhone = await User.findOne({ mobile })
-    
+
     if (!findUser && !findPhone) {
         // creating new user
         const newUser = await User.create(req.body);
@@ -266,7 +267,9 @@ export const saveAddress = asyncHandler(async (req, res, next) => {
 
 
 export const updateCartItems = asyncHandler(async (req, res): Promise<any> => {
+    console.log(req.body);
     const { _id } = req.user as IUser
+
     const { prodId, tipAmount, color } = req.body
     try {
         const product = await Product.findById(prodId) as IProduct
@@ -277,7 +280,7 @@ export const updateCartItems = asyncHandler(async (req, res): Promise<any> => {
         const cart = await Cart.findOne({ orderBy: _id });
         const basicAmount = 199
         let deliveryCharge = product?.price * 1 < basicAmount ? 30 : 0
-        let tip = tipAmount
+        let tip = tipAmount ? tipAmount : 0
         const handlingCharge = 2
         let cartTotal = deliveryCharge + tip + handlingCharge + product.price * 1
         let total = product.price
@@ -366,7 +369,7 @@ export const deleteCartItems = asyncHandler(async (req, res): Promise<any> => {
             }
             await cart.save();
             if (cart.products.length === 0) {
-                const cart = await Cart.findOneAndRemove({ orderBy: _id })
+                const cart = await Cart.findOneAndRemove({ orderBy: _id }, { new: true })
             }
             res.json({ message: "cart items decreased or item itself delted.", sucess: true })
 
@@ -381,7 +384,8 @@ export const deleteCartItems = asyncHandler(async (req, res): Promise<any> => {
 export const getUserCart = asyncHandler(async (req, res) => {
     const { _id } = req.user as IUser;
     try {
-        const cart = await Cart.findOne({ orderBy: _id }).populate("products._id")
+        const cart = await Cart.findOne({ orderBy: _id }).populate('products._id')
+        // .populate(['category', 'brand', 'color'])
         res.json({ cart })
     } catch (error) {
         console.log(error);
@@ -396,7 +400,8 @@ export const emptyCart = asyncHandler(async (req, res) => {
 
     try {
         const user = await User.findOne({ _id })
-        const cart = await Cart.findOneAndRemove({ orderBy: user?._id })
+        const cart = await Cart.findOneAndRemove({ orderBy: user?._id }, { new: true })
+        console.log(cart);
 
         res.json({ cart })
     } catch (error) {
