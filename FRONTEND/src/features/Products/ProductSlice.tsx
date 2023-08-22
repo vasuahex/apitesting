@@ -120,7 +120,6 @@ const productSlice = createSlice({
             state.cartStatus = action.payload
             if (state.isSuccess === true) {
                 toast.info(action.payload.message)
-
             }
         }).addCase(addToCart.rejected, (state, action) => {
             state.isError = true

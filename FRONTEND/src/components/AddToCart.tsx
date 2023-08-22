@@ -5,14 +5,14 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import { LiaRupeeSignSolid } from 'react-icons/lia'
 // import { increase } from "../features/Products/ProductSlice"
 import { clearCart } from "../features/Products/ProductSlice"
-import {FaPlus,FaMinus} from "react-icons/fa"
+import { FaPlus, FaMinus } from "react-icons/fa"
 const AddToCart = () => {
   const dispatch = useDispatch()
   const { cartItems } = useSelector((state: any) => state.product)
   console.log(cartItems);
   useEffect(() => {
     dispatch(getCartItems())
-  }, [cartItems])
+  }, [])
 
   const deleteCartItems = () => {
     dispatch(clearCart())
@@ -50,14 +50,18 @@ const AddToCart = () => {
                         <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
 
                           <button className="btn btn-link px-2">
-                            <FaMinus className="fas fa-minus"/>
+                            <FaMinus className="fas fa-minus" />
                           </button>
 
                           <input id="form1" min="0" name="quantity" value={each?.count} type="number"
                             className="form-control form-control-sm" />
 
-                          <button className="btn btn-link px-2" onClick={() => dispatch(addToCart({ prodId: each._id._id, color: each.color }))}>
-                            <FaPlus className="fas fa-plus"/>
+                          <button className="btn btn-link px-2" onClick={() => {
+                            dispatch(addToCart({ prodId: each._id._id, color: each.color }))
+                            dispatch(getCartItems())
+                          }
+                          }>
+                            <FaPlus className="fas fa-plus" />
                           </button>
                         </div>
                         <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
