@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import AllProducts from './components/AllProducts'
 import SingleProduct from './components/SingleProduct'
 import AddToCart from './components/AddToCart'
+import ProtectedRoute from './ProtectedRoute'
 const App = () => {
   return (
     <div>
@@ -27,7 +28,7 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path='product' element={<About />} />
+            <Route path='product' element={<ProtectedRoute><About /></ProtectedRoute>} />
             <Route path='contact' element={<Contact />} />
             <Route path='login' element={<Login />} />
             <Route path='allproducts' element={<AllProducts />} />

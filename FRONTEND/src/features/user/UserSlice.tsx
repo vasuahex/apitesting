@@ -8,7 +8,8 @@ interface InitialState {
     isSuccess: boolean,
     isLoading: boolean,
     message: any,
-    createdUser: any
+    createdUser: any,
+    loginCount: number
 }
 
 const initialState: InitialState = {
@@ -17,7 +18,8 @@ const initialState: InitialState = {
     isSuccess: false,
     isLoading: false,
     message: "",
-    createdUser: ""
+    createdUser: "",
+    loginCount: 0
 }
 
 export const registerUser = createAsyncThunk("auth/register", async (userData, thunkAPI) => {
@@ -43,7 +45,11 @@ export const authSlice = createSlice({
 
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        loginCountFunc:(state)=>{
+            state.loginCount=0
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(registerUser.pending, (state) => {
             state.isLoading = true;
@@ -72,11 +78,15 @@ export const authSlice = createSlice({
             state.isSuccess = true
             state.isError = false
             state.user = action.payload.user
-            if (state.isSuccess === true) {
+            if (state.isSuccess === true && state.loginCount<1) {
                 toast.info("user login succesfully")
                 localStorage.setItem("token", action.payload.user.refreshToken)
-
+                state.loginCount=state.loginCount+1
             }
+            else{
+            toast.info("user already login ")
+            }
+
         }).addCase(loginUser.rejected, (state, action) => {
             state.isError = true
             state.isLoading = false
@@ -91,3 +101,4 @@ export const authSlice = createSlice({
 })
 
 export default authSlice.reducer
+export const {loginCountFunc}=authSlice.actions
